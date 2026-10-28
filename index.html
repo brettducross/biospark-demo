@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Heartland Connections — BioSpark v2.0 B2B Partner Demo</title>
+  <script src="./biospark-widget.js"></script>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #475569;
+      --border: #e2e8f0;
+      --brand: #e11d48;
+      --brand-soft: #fff1f2;
+      --success: #059669;
+    }
+    body.dark {
+      --bg: #0b0f19;
+      --card: #111827;
+      --text: #f9fafb;
+      --muted: #9ca3af;
+      --border: #1f2937;
+      --brand-soft: #31101f;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 20px 28px;
+    }
+    .topbar {
+      max-width: 1360px;
+      margin: 0 auto 18px auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 13px 20px;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .brand-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .brand-logo {
+      background: var(--brand);
+      color: #fff;
+      font-weight: 800;
+      font-size: 13px;
+      padding: 8px 12px;
+      border-radius: 10px;
+      letter-spacing: 0.03em;
+    }
+    .brand-title {
+      font-size: 16.5px;
+      font-weight: 700;
+      margin: 0;
+    }
+    .brand-sub {
+      font-size: 12px;
+      color: var(--muted);
+      margin: 2px 0 0 0;
+    }
+    .controls-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .pill-stat {
+      background: #ecfdf5;
+      color: #047857;
+      border: 1px solid #a7f3d0;
+      font-size: 11.5px;
+      font-weight: 700;
+      padding: 5px 11px;
+      border-radius: 999px;
+    }
+    .pill-blue {
+      background: #eff6ff;
+      color: #1d4ed8;
+      border: 1px solid #bfdbfe;
+      font-size: 11.5px;
+      font-weight: 700;
+      padding: 5px 11px;
+      border-radius: 999px;
+    }
+    .pill-partner {
+      background: var(--brand-soft);
+      color: var(--brand);
+      border: 1px solid var(--brand);
+      font-size: 11.5px;
+      font-weight: 700;
+      padding: 5px 11px;
+      border-radius: 999px;
+    }
+    .theme-btn {
+      background: var(--card);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .layout {
+      max-width: 1360px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      gap: 20px;
+      align-items: start;
+    }
+    .left-col {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .panel {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px;
+      box-shadow: 0 6px 20px -6px rgba(15, 23, 42, 0.05);
+    }
+    .badge-shield {
+      display: inline-block;
+      background: #eff6ff;
+      color: #1d4ed8;
+      border: 1px solid #bfdbfe;
+      font-size: 10.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 3px 9px;
+      border-radius: 999px;
+      margin-bottom: 8px;
+    }
+    .badge-green {
+      display: inline-block;
+      background: #ecfdf5;
+      color: #059669;
+      border: 1px solid #a7f3d0;
+      font-size: 10.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 3px 9px;
+      border-radius: 999px;
+      margin-bottom: 8px;
+    }
+    .panel h2 {
+      font-size: 15.5px;
+      margin: 0 0 6px 0;
+    }
+    .panel p {
+      font-size: 12.5px;
+      color: var(--muted);
+      margin: 0 0 10px 0;
+      line-height: 1.45;
+    }
+    .shield-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .shield-item {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 9px 11px;
+      font-size: 12px;
+    }
+    .shield-item strong {
+      display: block;
+      color: var(--text);
+      margin-bottom: 2px;
+    }
+    .shield-item span {
+      color: var(--muted);
+    }
+    .inspector-box {
+      background: #0f172a;
+      color: #e2e8f0;
+      border-radius: 10px;
+      padding: 11px 13px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 11px;
+      line-height: 1.5;
+      overflow-x: auto;
+    }
+    .host-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .niche-bar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .niche-btn {
+      background: var(--bg);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 5px 10px;
+      font-size: 11.5px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .niche-btn.active {
+      background: var(--brand);
+      color: #fff;
+      border-color: var(--brand);
+    }
+    .host-bio-box {
+      margin-top: 14px;
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 14px;
+    }
+    .host-bio-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .host-bio-status {
+      color: var(--success);
+      font-size: 11.5px;
+      font-weight: 700;
+    }
+    #bio-textarea {
+      width: 100%;
+      height: 80px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 9px 11px;
+      font-size: 13px;
+      line-height: 1.45;
+      color: var(--text);
+      background: var(--card);
+      font-family: inherit;
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="brand-row">
+      <div class="brand-logo" id="topbar-logo">BIOSPARK v2.0</div>
+      <div>
+        <h1 class="brand-title" id="topbar-title">Heartland Connections — Live Step-3 Bio Onboarding Demo</h1>
+        <p class="brand-sub" id="topbar-sub">Zero prompt IP exposed in browser JS · Domain-locked partner API keys · 5 Server-Side Niche Voice Packs</p>
+      </div>
+    </div>
+    <div class="controls-row">
+      <span class="pill-partner" id="partner-pill">Partner Demo: Heartland Connections</span>
+      <span class="pill-blue">🔒 Server-Side IP Protected</span>
+      <span class="pill-stat">🛡️ Auto-Scrubs Phone / IG / CashApp Leaks</span>
+      <button class="theme-btn" id="toggle-theme-btn">Switch Light / Dark</button>
+    </div>
+  </div>
+
+  <div class="layout">
+    <div class="left-col">
+      <div class="panel">
+        <span class="badge-shield">4-Layer Anti-Clone & IP Moat</span>
+        <h2>Why Competitors Cannot Copy Your Widget</h2>
+        <p>Anyone who inspects <code>biospark-widget.js</code> only sees a thin UI form shell. All secret sauce lives behind <code>POST /api/v1/generate</code>:</p>
+        <div class="shield-list">
+          <div class="shield-item">
+            <strong>1. Server-Only Niche Voice Packs</strong>
+            <span>Faith, Senior 50+, Country, and Plant-Based voice models never leave the server.</span>
+          </div>
+          <div class="shield-item">
+            <strong>2. Built-In Scammer & Contact-Leak Scrubber</strong>
+            <span>Strips phone numbers, @handles, WhatsApp, CashApp, OnlyFans, and external links before bio insertion.</span>
+          </div>
+          <div class="shield-item">
+            <strong>3. Domain-Locked API Key Validation</strong>
+            <span>Validates <code>X-BioSpark-Key</code> against registered partner domain allowlists.</span>
+          </div>
+          <div class="shield-item">
+            <strong>4. Closed-Loop Conversion Telemetry</strong>
+            <span>Continuously re-weights bio structures by reply lift per niche (Provisional Patent architecture).</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <span class="badge-green">Live Server API Inspector</span>
+        <h2>Protected Server Response Telemetry</h2>
+        <div class="inspector-box" id="api-inspector">
+Waiting for /api/v1/generate response...
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="host-header">
+        <div>
+          <span class="badge-green" id="host-step-badge">Heartland Connections Onboarding (Step 3 of 3)</span>
+          <h2 id="host-header-title" style="font-size: 18px; margin: 2px 0 0 0;">Heartland Connections — Complete Your Profile Bio</h2>
+        </div>
+        <div class="niche-bar">
+          <button class="niche-btn active" data-set-niche="general">Mainstream</button>
+          <button class="niche-btn" data-set-niche="faith">Faith & Values</button>
+          <button class="niche-btn" data-set-niche="senior50">Senior 50+</button>
+          <button class="niche-btn" data-set-niche="country">Country & Rural</button>
+          <button class="niche-btn" data-set-niche="plantbased">Plant-Based</button>
+        </div>
+      </div>
+
+      <biospark-insert
+        id="demo-widget"
+        target="#bio-textarea"
+        api-url="http://127.0.0.1:8765"
+        api-key="bs_live_demo_partner_key_2026"
+        niche="general"
+        theme="light"
+        brand="#e11d48">
+      </biospark-insert>
+
+      <div class="host-bio-box">
+        <div class="host-bio-label">
+          <span id="host-bio-label-text">Heartland Connections Profile Bio Field (<code>#bio-textarea</code> — Auto-Populated & Moderated)</span>
+          <span class="host-bio-status" id="sync-status">✓ Synced with Protected Server API</span>
+        </div>
+        <textarea id="bio-textarea"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const widget = document.getElementById("demo-widget");
+    const statusEl = document.getElementById("sync-status");
+    const inspectorEl = document.getElementById("api-inspector");
+    const themeBtn = document.getElementById("toggle-theme-btn");
+
+    // Dynamic B2B Partner Query Parameter Customization
+    // Supports: ?site=ChristianCafe&niche=faith&color=%231d4ed8&vendor=SkaDate&theme=dark&api=https://...
+    const ALLOWED_NICHES = ["general", "faith", "senior50", "country", "plantbased"];
+    const params = new URLSearchParams(window.location.search);
+
+    const rawSite = (params.get("site") || "").trim();
+    const rawVendor = (params.get("vendor") || "").trim();
+    const rawNiche = (params.get("niche") || "").trim().toLowerCase();
+    const rawColor = (params.get("color") || "").trim();
+    const rawTheme = (params.get("theme") || "").trim().toLowerCase();
+    const rawApiUrl = (params.get("api") || "").trim();
+
+    const partnerSiteName = rawSite || (rawVendor ? `${rawVendor} Partner Site` : "Heartland Connections");
+    const activeNiche = ALLOWED_NICHES.includes(rawNiche) ? rawNiche : "general";
+
+    let brandColor = "#e11d48";
+    if (rawColor) {
+      const normalized = rawColor.startsWith("#") ? rawColor : `#${rawColor}`;
+      if (/^#[0-9a-fA-F]{3,8}$/.test(normalized)) {
+        brandColor = normalized;
+      }
+    }
+
+    // Apply CSS custom properties for accent color
+    document.documentElement.style.setProperty("--brand", brandColor);
+    document.documentElement.style.setProperty("--brand-soft", `${brandColor}18`);
+
+    // Update page title & header elements
+    if (rawVendor && rawSite) {
+      document.title = `${partnerSiteName} (${rawVendor} OEM Plugin) — BioSpark v2.0 B2B Demo`;
+      document.getElementById("topbar-title").textContent = `${partnerSiteName} · ${rawVendor} 1-Click OEM Bio Builder Demo`;
+      document.getElementById("partner-pill").textContent = `OEM Vendor: ${rawVendor} (${partnerSiteName})`;
+      document.getElementById("host-step-badge").textContent = `${rawVendor} Registration Template · Step 3 of 3`;
+    } else if (rawVendor) {
+      document.title = `${rawVendor} OEM Plugin — BioSpark v2.0 B2B Partner Demo`;
+      document.getElementById("topbar-title").textContent = `${rawVendor} — Official 1-Click Bio Builder Add-On Demo`;
+      document.getElementById("partner-pill").textContent = `OEM Partner Demo: ${rawVendor}`;
+      document.getElementById("host-step-badge").textContent = `${rawVendor} Operator Onboarding (Step 3 of 3)`;
+    } else {
+      document.title = `${partnerSiteName} — BioSpark v2.0 B2B Partner Demo`;
+      document.getElementById("topbar-title").textContent = `${partnerSiteName} — Live Step-3 Bio Onboarding Demo`;
+      document.getElementById("partner-pill").textContent = `Partner Demo: ${partnerSiteName}`;
+      document.getElementById("host-step-badge").textContent = `${partnerSiteName} Onboarding (Step 3 of 3)`;
+    }
+
+    document.getElementById("host-header-title").textContent = `${partnerSiteName} — Complete Your Profile Bio`;
+    document.getElementById("host-bio-label-text").innerHTML = `${partnerSiteName.replace(/</g, "&lt;")} Profile Bio Field (<code>#bio-textarea</code> — Auto-Populated & Moderated)`;
+
+    // Sync active niche button in host bar
+    document.querySelectorAll("[data-set-niche]").forEach((btn) => {
+      btn.classList.toggle("active", btn.getAttribute("data-set-niche") === activeNiche);
+    });
+
+    // Apply attributes to <biospark-insert>
+    if (rawApiUrl) {
+      widget.setAttribute("api-url", rawApiUrl);
+    }
+    widget.setAttribute("brand", brandColor);
+    widget.setAttribute("niche", activeNiche);
+
+    if (rawTheme === "dark") {
+      document.body.classList.add("dark");
+      widget.setAttribute("theme", "dark");
+    }
+
+    document.addEventListener("biospark:populated", (e) => {
+      const d = e.detail;
+      const words = d.bio.trim().split(/\s+/).length;
+      statusEl.textContent =
+        "✓ Server Verified (" +
+        words +
+        " words · " +
+        (d.moderation ? d.moderation.shield_badge : "Clean") +
+        ")";
+
+      inspectorEl.textContent = JSON.stringify(
+        {
+          endpoint: "POST /api/v1/generate",
+          partnerContext: {
+            site: partnerSiteName,
+            vendor: rawVendor || "Direct Site Integration",
+            brandColor: brandColor,
+          },
+          auth: d.auth,
+          nichePack: d.nicheLabel,
+          moderationReport: d.moderation,
+          selectedVariant: d.variantId,
+          bioConversionScore: d.score,
+          telemetryEvent: d.telemetryEvent || "preview_generated",
+        },
+        null,
+        2
+      );
+    });
+
+    document.querySelectorAll("[data-set-niche]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll("[data-set-niche]").forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        widget.setAttribute("niche", btn.getAttribute("data-set-niche"));
+      });
+    });
+
+    themeBtn.addEventListener("click", () => {
+      const isDark = document.body.classList.toggle("dark");
+      widget.setAttribute("theme", isDark ? "dark" : "light");
+    });
+  </script>
+</body>
+</html>
